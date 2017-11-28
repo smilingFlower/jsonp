@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        // // 得到航班信息查询结果后的回调函数
+        // var flightHandler = function(data){
+        //     alert('你查询的航班结果是：票价 ' + data.price + ' 元，' + '余票 ' + data.tickets + ' 张。');
+        // };
+        // // 提供jsonp服务的url地址（不管是什么类型的地址，最终生成的返回值都是一段javascript代码）
+        // // var url = "http://flightQuery.com/jsonp/flightResult.aspx?code=CA1998&callback=flightHandler";
+        // var url = "http://localhost:3000/www/remote.js";
+        // // 创建script标签，设置其属性
+        // var script = document.createElement('script');
+        // script.setAttribute('src', url);
+        // // 把script标签加入head，此时调用开始
+        // document.getElementsByTagName('head')[0].appendChild(script);
+    </script>
+    <script src="./jsonp.js"></script>
+</head>
+<body>
+    
+</body>
+<script>
+    var url = "https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&platform=h5&uin=0&needNewCode=1"
+
+    jsonp(url, {
+        param: 'jsonpCallback',
+        prefix: 'koone'
+    } ,function(err, data) {
+        if (err) {
+            console.log(err)
+        }else {            
+            console.log(data)
+            console.log(1)
+        }
+    });
+
+    jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg?g_tk=1928093487&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&uin=0&needNewCode=1&platform=h5', {
+        param: 'jsonpCallback',
+        prefix: 'kotwo'
+    } ,function(err, data) {
+        if (err) {
+            console.log(err)
+        }else {            
+            console.log(data)
+            console.log(2)
+        }
+    });    
+</script>
+</html>
+
+
+<!-- 
+    原理：
+        script标签引入的文件（js、php、jsp)不受同源策略的限制的。
+        通过script标签引入文件，其返回一个js函数的调用，如返回callback(["paco","john","lili"])，也就是说此文件返回的结果调用了callback函数，并且把["paco","john","lili"]传进去，这个["paco","john","lili"]是一个用户列表。那么如果此时我们的页面中有一个callback函数，那么JSONP_getUsers就被调用到，并且传入了用户列表。此时就实现了在本域获取其他域数据的功能，也就是跨域。
+ -->
